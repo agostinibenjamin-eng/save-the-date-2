@@ -886,42 +886,39 @@
         .characters-container {
           display: grid;
           grid-template-columns: repeat(6, 1fr);
-          /* 6 equal slots mapped over 95vw */
           grid-template-rows: auto auto;
           column-gap: 0;
           row-gap: 0;
           width: 95vw;
           max-width: 500px;
-          bottom: 12%;
+          bottom: 15%;
           left: 50%;
           transform: translateX(-50%);
-          /* Perfectly centered Stage */
           align-items: end;
           justify-items: center;
+
+          /* VARIABLE PROPORTIONS - Master scale controls entire family relative size */
+          --base-scale: 75%;
         }
 
         .characters-container::before {
           display: none;
-          /* Strip out any old flexbox hacks */
         }
 
         .character {
-          width: 110% !important;
-          /* Slight calculated overlap (5% bleed left/right) */
           height: auto !important;
           max-height: 25vh !important;
           margin: 0 !important;
-          /* KILL ALL DESKTOP OVERLAPPING ARTIFACTS */
           position: relative;
         }
 
-        /* ROW 1: PARENTS (Centered on cols 2-5) */
+        /* PARENTS */
         #char-flora {
           grid-column: 2 / span 2;
           grid-row: 1;
           z-index: 1;
           top: 2vh;
-          /* Sink behind kids neatly without transforms breaking animations */
+          width: calc(var(--base-scale) * 1.1) !important;
         }
 
         #char-benjamin {
@@ -929,28 +926,31 @@
           grid-row: 1;
           z-index: 1;
           top: 2vh;
+          width: calc(var(--base-scale) * 1.1) !important;
         }
 
+        /* CHILDREN */
         #char-isaac {
           grid-column: 1 / span 2;
           grid-row: 2;
           z-index: 3;
-          width: 90% !important;
-          /* Scale Isaac down to perfectly match Eve's optical weight */
+          /* Isaac image crop needs slightly lower scale multiplier to match Eve visually */
+          width: calc(var(--base-scale) * 0.75) !important;
         }
 
         #char-hannah {
           grid-column: 3 / span 2;
           grid-row: 2;
           z-index: 4;
-          width: 130% !important;
-          /* Hannah larger in the middle */
+          /* Hannah needs slightly larger multiplier as center anchor */
+          width: calc(var(--base-scale) * 1.15) !important;
         }
 
         #char-eve {
           grid-column: 5 / span 2;
           grid-row: 2;
           z-index: 3;
+          width: calc(var(--base-scale) * 1) !important;
         }
 
         .wedding-overlay {
