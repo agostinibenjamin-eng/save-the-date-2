@@ -884,44 +884,65 @@
         }
 
         .characters-container {
-          width: 800px;
-          bottom: 60px;
-          /* Scale the entire perfectly aligned desktop layout down to fit a 320px-350px block visually */
-          transform: translateX(-50%) scale(0.42) !important;
-          transform-origin: bottom center;
+          width: 100vw;
+          bottom: 12%;
+          flex-wrap: wrap;
+          /* Turn on 2-row layout */
+          transform: translateX(-50%);
+          /* Standard centering */
+          align-content: flex-end;
+        }
+
+        /* Magic break to split parents and children */
+        .characters-container::before {
+          content: "";
+          display: block;
+          width: 100%;
+          order: 3;
         }
 
         .character {
-          height: 380px;
-          /* Lock height in pixel so vh doesn't double-shrink on mobile */
+          height: 22vh;
+          /* Use vh again since we have vertical room now */
+          max-height: 200px;
           width: auto;
-          max-height: none;
           margin: 0;
         }
 
-        /* Fixed overlaps matching the 800px virtual container perfectly */
-        #char-isaac {
-          margin-right: -55px;
-        }
-
+        /* ROW 1: PARENTS (Top) */
         #char-flora {
-          margin-left: -55px;
-          margin-right: -90px;
-        }
-
-        #char-hannah {
+          order: 1;
+          z-index: 2;
+          margin-right: -10px;
           margin-bottom: -15px;
-          margin-left: -90px;
-          margin-right: -100px;
+          /* Sink them slightly behind the kids */
         }
 
         #char-benjamin {
-          margin-left: -100px;
-          margin-right: -80px;
+          order: 2;
+          z-index: 1;
+          margin-left: -10px;
+          margin-bottom: -15px;
+        }
+
+        /* ROW 2: CHILDREN (Bottom) */
+        #char-isaac {
+          order: 4;
+          z-index: 5;
+          margin-right: -20px;
+        }
+
+        #char-hannah {
+          order: 5;
+          z-index: 6;
+          /* Taller than others, adjust vertically if needed */
+          margin-bottom: 5px;
         }
 
         #char-eve {
-          margin-left: -80px;
+          order: 6;
+          z-index: 4;
+          margin-left: -20px;
         }
 
         .wedding-overlay {
@@ -933,17 +954,17 @@
         .wedding-overlay .group-photo,
         .wedding-overlay .group-video {
           width: 90vw !important;
-          /* Overrides clamp(500px) which forced the cutoff on small mobile */
           max-width: none;
         }
 
         .scene-text {
-          top: 15%;
+          top: 10%;
+          /* Lift text a bit higher to make room for two rows */
           width: 95%;
         }
 
         .reveal-overlay {
-          top: 15%;
+          top: 10%;
         }
 
         .reveal-line {
