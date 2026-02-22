@@ -1,0 +1,1472 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flora & Benjamin — Save the Date</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Parisienne&family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&family=EB+Garamond:ital@0;1&family=Great+Vibes&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --gold: #c9a84c;
+            --ivory: #f5f0e8;
+            --gold-soft: #e8d5a3;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--ivory);
+            overflow-x: hidden;
+            font-family: "EB Garamond", serif;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        /* Hero Video Background */
+        #hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom,
+                    rgba(10, 10, 15, 0.3),
+                    rgba(10, 10, 15, 0.6));
+            z-index: -1;
+        }
+
+        /* Handwriting Animation Container */
+        .hero-title-container {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            font-family: "Great Vibes", cursive;
+            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+        }
+
+        /* ROBUST HANDWRITING REVEAL */
+        .handwriting-text {
+            font-size: clamp(4rem, 12vw, 9rem);
+            line-height: 1.1;
+            color: var(--gold);
+            white-space: nowrap;
+            position: relative;
+            display: inline-block;
+            /* Clip-path reveal strategy with generous padding to prevent cutting off flourishes */
+            clip-path: inset(-20% 100% -20% -20%);
+            animation: writeReveal 3.5s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        /* Optional: Add a "pen tip" glowing dot */
+        .handwriting-text::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 0;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow:
+                0 0 10px #fff,
+                0 0 20px var(--gold);
+            transform: translate(50%, -50%);
+            opacity: 0;
+            animation: penTip 3.5s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        .handwriting-date {
+            font-family: "Cinzel", serif;
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            color: var(--ivory);
+            margin-top: 1rem;
+            opacity: 0;
+            letter-spacing: 0.3em;
+            transform: translateY(20px);
+            animation: fadeUpDate 1.5s ease forwards;
+            animation-delay: 3.8s;
+            /* Start after writing finishes */
+        }
+
+        @keyframes writeReveal {
+            to {
+                clip-path: inset(-20% -20% -20% -20%);
+            }
+        }
+
+        @keyframes penTip {
+            0% {
+                opacity: 1;
+                right: 100%;
+            }
+
+            95% {
+                opacity: 1;
+                right: 0%;
+            }
+
+            100% {
+                opacity: 0;
+                right: 0%;
+            }
+        }
+
+        @keyframes fadeUpDate {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 5vh;
+            font-family: "Cinzel", serif;
+            font-size: 0.9rem;
+            color: var(--gold);
+            letter-spacing: 0.1em;
+            animation: pulse 2s infinite ease-in-out;
+            text-align: center;
+            z-index: 5;
+        }
+
+        /* ... existing particles ... */
+        .particle {
+            position: absolute;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            will-change: transform, opacity;
+            animation: floatUp var(--pdur) linear var(--pdelay) infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: var(--alpha, 0.3);
+            }
+
+            80% {
+                opacity: var(--alpha, 0.3);
+            }
+
+            100% {
+                transform: translateY(-100vh) translateX(var(--drift, 20px));
+                opacity: 0;
+            }
+        }
+
+        /* FAMILY STAGE & CHARACTERS */
+        /* FAMILY STAGE */
+        .family-stage-wrapper {
+            height: 600vh;
+            position: relative;
+        }
+
+        .family-stage {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            /* Align bottom for characters */
+        }
+
+        /* Noise Overlay for texture */
+        .family-stage::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 5;
+            mix-blend-mode: overlay;
+        }
+
+        .stage-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            transition: background 1.5s ease;
+        }
+
+        .stage-bg.bg-stars {
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
+        }
+
+        .stage-bg.bg-rencontre {
+            background: radial-gradient(circle at top right,
+                    rgba(201, 168, 76, 0.2),
+                    #000 80%);
+        }
+
+        .stage-bg.bg-luxembourg {
+            background: linear-gradient(to bottom,
+                    #000 0%,
+                    #0d1b2a 50%,
+                    #1b263b 100%);
+        }
+
+        .stage-bg.bg-hannah {
+            background: radial-gradient(circle at top left,
+                    rgba(219, 112, 147, 0.15),
+                    #000 80%);
+        }
+
+        .stage-bg.bg-isaac {
+            background: radial-gradient(circle at bottom right,
+                    rgba(212, 163, 115, 0.15),
+                    #000 80%);
+        }
+
+        .stage-bg.bg-eve {
+            background: radial-gradient(circle at center,
+                    rgba(154, 186, 222, 0.15),
+                    #000 80%);
+        }
+
+        .stage-bg.bg-dark {
+            background: #000;
+        }
+
+        .stage-bg.bg-gold {
+            background: radial-gradient(circle at center,
+                    rgba(201, 168, 76, 0.25) 0%,
+                    #000 80%);
+        }
+
+        /* UPDATED CHARACTER SPACING */
+        .characters-container {
+            position: absolute;
+            bottom: 8%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            /* Wider container to prevent squishing with negative margins */
+            width: clamp(600px, 95vw, 1200px);
+            z-index: 10;
+            perspective: 2000px;
+            /* 3D Perspective for page turn */
+        }
+
+        .character {
+            height: clamp(200px, 35vh, 420px);
+            /* Slightly larger max height */
+            width: auto;
+            object-fit: contain;
+            flex-shrink: 0;
+
+            /* PAGE TURN TRANSITION SETUP */
+            transform-origin: left center;
+            /* Pivot like a book page */
+            transition:
+                opacity 1.5s var(--ease),
+                transform 1.5s var(--ease-spring),
+                /* Bouncy spring for page feel */
+                filter 1s ease;
+            will-change: transform, opacity;
+
+            margin: 0 -30px;
+            /* Base overlap */
+            margin-bottom: 0px;
+            filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.3));
+        }
+
+        /* FINE TUNING SPACING PER CHARACTER
+         Goal: Visual equality.
+         Isaac (1) -[gap]- Flora (2) -[gap]- Hannah (3) -[gap]- Benjamin (4) -[gap]- Eve (5)
+      */
+
+        #char-isaac {
+            order: 1;
+            z-index: 2;
+            /* Isaac is "too close" to Flora, so we keep his margin moderate */
+            margin-right: -60px;
+        }
+
+        #char-flora {
+            order: 2;
+            z-index: 1;
+            margin-left: -60px;
+            margin-right: -100px;
+            /* Pull Hannah closer */
+        }
+
+        #char-hannah {
+            order: 3;
+            z-index: 3;
+            margin-bottom: -10px;
+            margin-left: -100px;
+            margin-right: -110px;
+            /* Pull Benjamin closer */
+        }
+
+        #char-benjamin {
+            order: 4;
+            z-index: 0;
+            margin-left: -110px;
+            margin-right: -90px;
+            /* Pull Eve closer */
+        }
+
+        #char-eve {
+            order: 5;
+            z-index: 2;
+            margin-left: -90px;
+        }
+
+        /* Character States - PAGE TURN EFFECT */
+        /* We unify the 'hidden' states to the 'page closed' state */
+        .char-hidden-left,
+        .char-hidden-right,
+        .char-hidden-top {
+            opacity: 0 !important;
+            transform: rotateY(-95deg) !important;
+            /* Folded back */
+            pointer-events: none;
+        }
+
+        .char-ghost {
+            opacity: 0.07 !important;
+            filter: grayscale(100%) !important;
+            transform: rotateY(0deg) scale(0.93) !important;
+            /* Keep flat but scaled */
+        }
+
+        .char-visible {
+            opacity: 1 !important;
+            transform: rotateY(0deg) scale(1) !important;
+            /* Open page */
+            filter: none !important;
+        }
+
+        /* Wedding Overlay - GRID STACK METHOD */
+        .wedding-overlay {
+            position: absolute;
+            bottom: 8%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 2.5s ease;
+            pointer-events: none;
+            z-index: 12;
+            display: grid;
+            /* Grid for stacking */
+            place-items: center;
+            width: 100%;
+        }
+
+        .wedding-overlay.crossfade-active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Stack items in same cell */
+        .group-photo,
+        .group-video {
+            grid-area: 1 / 1;
+            width: clamp(500px, 85vw, 900px);
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px rgba(201, 168, 76, 0.3));
+            transition:
+                transform 3s ease,
+                opacity 0.5s ease;
+        }
+
+        .group-photo {
+            transform: scale(0.95);
+            z-index: 1;
+        }
+
+        .group-video {
+            transform: scale(0.95);
+            z-index: 2;
+            opacity: 0;
+        }
+
+        .wedding-overlay.crossfade-active .group-photo,
+        .wedding-overlay.crossfade-active .group-video {
+            transform: scale(1);
+        }
+
+        .group-video.video-visible {
+            opacity: 1;
+        }
+
+        /* PROPS */
+        .stage-prop-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            perspective: 1000px;
+            overflow: hidden;
+        }
+
+        .prop {
+            position: absolute;
+            opacity: 0;
+            transition:
+                opacity 1.5s ease,
+                transform 1.5s ease;
+        }
+
+        .prop.visible {
+            opacity: 0.8;
+        }
+
+        /* STARS */
+        .prop-stars {
+            width: 100%;
+            height: 100%;
+        }
+
+        .star-3d {
+            position: absolute;
+            color: var(--gold);
+            font-size: 1.5rem;
+            opacity: 0;
+            animation: starPulse 3s infinite alternate;
+        }
+
+        .star-3d.s1 {
+            top: 20%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .star-3d.s2 {
+            top: 30%;
+            right: 25%;
+            animation-delay: 1s;
+        }
+
+        .star-3d.s3 {
+            top: 60%;
+            left: 15%;
+            animation-delay: 2s;
+        }
+
+        @keyframes starPulse {
+            from {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 0.8;
+                transform: scale(1.2);
+            }
+        }
+
+        /* Scene Text */
+        .scene-text {
+            position: absolute;
+            top: 15%;
+            /* Adjusted for better visibility */
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 20;
+            pointer-events: none;
+            width: 90%;
+            max-width: 900px;
+        }
+
+        .scene-label {
+            font-family: "Cinzel", serif;
+            font-size: clamp(1.1rem, 2.8vw, 1.8rem);
+            color: var(--gold);
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .scene-date-display {
+            font-family: "Cinzel", serif;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            color: var(--ivory);
+            line-height: 1.1;
+            opacity: 0;
+            transform: translateY(15px);
+            transition:
+                opacity 0.9s ease,
+                transform 0.9s var(--ease);
+        }
+
+        .scene-narrative {
+            font-family: "EB Garamond", serif;
+            font-size: clamp(1.4rem, 2.8vw, 2.1rem);
+            color: rgba(245, 240, 232, 0.8);
+            margin-top: 0.8rem;
+            opacity: 0;
+            transition: opacity 1s ease 0.3s;
+        }
+
+        .hero-names {
+            font-family: "Cormorant Garamond", serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 1.8em;
+            line-height: 1.2;
+            display: block;
+            margin-top: 5px;
+            color: var(--ivory);
+        }
+
+        .scene-text.active .scene-label,
+        .scene-text.active .scene-date-display,
+        .scene-text.active .scene-narrative {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Fireworks */
+        #fireworks-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 15;
+            pointer-events: none;
+        }
+
+        /* Flash Overlay */
+        #flash-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle,
+                    rgba(201, 168, 76, 0.6),
+                    transparent);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 99;
+            transition: opacity 1.2s ease;
+        }
+
+        /* Reveal Overlay for Finale */
+        .reveal-overlay {
+            position: absolute;
+            top: 20%;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 25;
+            pointer-events: none;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .reveal-visible {
+            display: flex;
+        }
+
+        .reveal-names {
+            font-family: "Cormorant Garamond", serif;
+            font-style: italic;
+            font-size: clamp(2rem, 5vw, 4.5rem);
+            color: var(--ivory);
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .reveal-line {
+            height: 1px;
+            width: 0;
+            background: var(--gold);
+            margin: 1rem 0;
+            animation: expandRevealLine 1.2s var(--ease) 0.5s forwards;
+        }
+
+        .reveal-date {
+            font-family: "Cinzel", serif;
+            font-weight: 700;
+            font-size: clamp(2rem, 6vw, 5rem);
+            color: var(--gold);
+            display: flex;
+            gap: 0.1em;
+            justify-content: center;
+        }
+
+        .reveal-date span {
+            display: inline-block;
+            opacity: 0;
+            transform: rotateY(90deg) translateZ(30px);
+            animation: revealChar 0.8s var(--ease) forwards;
+        }
+
+        .reveal-sub {
+            font-family: "Cormorant Garamond", serif;
+            font-style: italic;
+            letter-spacing: 0.3em;
+            font-size: clamp(1.2rem, 3.5vw, 2rem);
+            margin-top: 1.5rem;
+            opacity: 0;
+            animation: fadeIn 1.5s ease 2s forwards;
+        }
+
+        .reveal-location {
+            font-family: "EB Garamond", serif;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            opacity: 0.85;
+            margin-top: 0.8rem;
+            padding: 0 1rem;
+            line-height: 1.5;
+            animation: fadeIn 1.5s ease 2.5s forwards;
+        }
+
+        @keyframes expandRevealLine {
+            to {
+                width: 30%;
+            }
+        }
+
+        @keyframes revealChar {
+            to {
+                opacity: 1;
+                transform: rotateY(0) translateZ(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* FOOTER */
+        .footer {
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            padding: 2rem;
+            background: var(--bg);
+        }
+
+        .footer-line {
+            width: 40%;
+            height: 1px;
+            background: var(--gold);
+            margin-bottom: 2rem;
+            opacity: 0.5;
+        }
+
+        .footer-invite {
+            font-family: "Cormorant Garamond", serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            opacity: 0.65;
+            margin-bottom: 1rem;
+        }
+
+        .footer-date {
+            font-family: "Cinzel", serif;
+            letter-spacing: 0.3em;
+            color: var(--gold);
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-monogram {
+            width: 60px;
+            height: 60px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-family: "Cinzel", serif;
+            color: var(--gold);
+            margin-bottom: 2rem;
+        }
+
+        .scroll-top {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: var(--gold);
+            cursor: pointer;
+            transition: background 0.3s;
+            text-decoration: none;
+        }
+
+        .scroll-top:hover {
+            background: rgba(201, 168, 76, 0.1);
+        }
+
+        /* Heart Rain */
+        .heart-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 100;
+            font-size: 1.5rem;
+            animation: fall var(--duration) linear forwards;
+        }
+
+        /* Hero Particles (Kept for reference) */
+        .particle {
+            position: absolute;
+            background: var(--ivory);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: floatUp var(--pdur) infinite var(--pdelay) linear;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: var(--alpha, 0.3);
+            }
+
+            80% {
+                opacity: var(--alpha, 0.3);
+            }
+
+            100% {
+                transform: translateY(-100vh) translateX(var(--drift, 20px));
+                opacity: 0;
+            }
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes boom-entrance {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            60% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .char-boom {
+            animation: boom-entrance 0.8s var(--ease-spring) forwards;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .character {
+                height: 52vw;
+                width: auto;
+                max-height: none;
+                margin: 0;
+            }
+
+            /* Perfect mathematical mapping of desktop proportions to vw */
+            #char-isaac {
+                margin-right: -9vw;
+            }
+
+            #char-flora {
+                margin-left: -9vw;
+                margin-right: -15vw;
+            }
+
+            #char-hannah {
+                margin-bottom: -1.5vw;
+                margin-left: -15vw;
+                margin-right: -16vw;
+            }
+
+            #char-benjamin {
+                margin-left: -16vw;
+                margin-right: -13vw;
+            }
+
+            #char-eve {
+                margin-left: -13vw;
+            }
+
+            .characters-container,
+            .wedding-overlay {
+                width: 100vw;
+                height: 50vh;
+                bottom: 12%;
+                /* a bit of padding for mobile browser ui */
+            }
+
+            .wedding-overlay .group-photo {
+                max-width: 100%;
+                max-height: 100%;
+            }
+
+            .scene-text {
+                top: 15%;
+                width: 95%;
+            }
+
+            .reveal-overlay {
+                top: 15%;
+            }
+
+            .reveal-line {
+                display: none;
+            }
+
+            .stage-prop-container {
+                z-index: -1;
+                /* Keep behind text */
+            }
+        }
+
+        /* SVG SCROLL ANIMATIONS (Flowers) */
+        .svg-animations-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 12;
+            /* Above props, behind text and characters */
+        }
+
+        .growth-flower {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 40%;
+            /* Moved further down below text */
+            width: clamp(250px, 45vw, 450px);
+            /* Larger for detail */
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .growth-flower.active {
+            opacity: 1;
+        }
+
+        .flower-path {
+            fill: none;
+            stroke: var(--gold);
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            /* Dash array will be set mostly by JS, but we start hidden */
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            filter: drop-shadow(0 0 6px rgba(201, 168, 76, 0.6));
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HERO -->
+    <section class="hero" id="hero-section">
+        <video id="hero-video" autoplay muted loop playsinline>
+            <source src="assets/Vidéo_d_alliances_élégante_pour_mariage.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-overlay"></div>
+
+        <div class="hero-title-container">
+            <div class="handwriting-text" data-text="Save The Date">
+                Save The Date
+            </div>
+            <div class="handwriting-date">27 · 08 · 2026</div>
+        </div>
+
+        <div class="scroll-indicator" style="
+          animation-delay: 5s;
+          opacity: 0;
+          animation: pulse 2s infinite ease-in-out 6s forwards;
+        ">
+            Notre Histoire ↓
+        </div>
+
+        <!-- Particles container, filled by JS -->
+        <div id="hero-particles"></div>
+    </section>
+
+    <!-- STAGE WRAPPER -->
+    <section class="family-stage-wrapper">
+        <div class="family-stage">
+            <div class="stage-bg" id="stage-bg"></div>
+
+            <div class="scene-text" id="scene-text">
+                <div class="scene-label" id="text-label"></div>
+                <div class="scene-date-display" id="text-date"></div>
+                <div class="scene-narrative" id="text-narrative"></div>
+            </div>
+
+            <div class="stage-prop-container" id="prop-container">
+                <div class="prop prop-stars" id="prop-stars">
+                    <!-- Stars will be added via CSS/JS or simple spans here -->
+                    <span class="star-3d s1">✦</span>
+                    <span class="star-3d s2">✦</span>
+                    <span class="star-3d s3">✦</span>
+                </div>
+            </div>
+
+            <div class="characters-container" id="chars-famille">
+                <img class="character" id="char-isaac" src="assets/Isaac_cutout.png" alt="Isaac" />
+                <img class="character" id="char-flora" src="assets/Flora_cutout.png" alt="Flora" />
+                <img class="character" id="char-hannah" src="assets/Hannah_cutout.png" alt="Hannah" />
+                <img class="character" id="char-benjamin" src="assets/Benjamin_cutout.png" alt="Benjamin" />
+                <img class="character" id="char-eve" src="assets/Eve_cutout.png" alt="Eve" />
+            </div>
+
+            <div class="wedding-overlay" id="wedding-overlay">
+                <img class="group-photo" id="wedding-group" src="assets/groupe_mariage.png" alt="Famille Mariage" />
+                <img class="group-video" id="wedding-video" src="" alt="Wedding Dance" style="opacity: 0" />
+            </div>
+
+            <canvas id="fireworks-canvas"></canvas>
+
+            <div id="flash-overlay"></div>
+
+            <div class="reveal-overlay" id="reveal-overlay">
+                <div class="reveal-names">Flora & Benjamin</div>
+                <div class="reveal-line"></div>
+                <div class="reveal-date" id="reveal-date-container">27 AOÛT 2026</div>
+                <div class="reveal-sub">Le Mariage · Enfin</div>
+                <div class="reveal-location">
+                    Entre Montpellier et Sète<br />
+                    <span style="font-size: 0.85em; opacity: 0.8">Toutes les informations utiles vous seront envoyées
+                        très
+                        prochainement</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-line"></div>
+        <div class="footer-invite">Invitation formelle à suivre</div>
+        <div class="footer-date">Réservez cette date · 27 · 08 · 2026</div>
+        <div class="footer-monogram">F & B</div>
+        <a href="#" class="scroll-top">↑</a>
+    </footer>
+
+    <script>
+        // --- 1. HERO PARTICLES ---
+        const heroParticles = document.getElementById("hero-particles");
+        const particleCount = window.innerWidth < 768 ? 25 : 50;
+        for (let i = 0; i < particleCount; i++) {
+            const span = document.createElement("span");
+            span.classList.add("particle");
+            const size = Math.random() * 3 + 2;
+            span.style.width = `${size}px`;
+            span.style.height = `${size}px`;
+            span.style.left = `${Math.random() * 100}%`;
+            span.style.top = `${Math.random() * 100}%`;
+            span.style.setProperty("--pdur", `${Math.random() * 4 + 4}s`);
+            span.style.setProperty("--pdelay", `${Math.random() * 2}s`);
+            span.style.setProperty("--alpha", `${Math.random() * 0.2 + 0.1}`);
+            span.style.setProperty("--drift", `${(Math.random() - 0.5) * 40}px`);
+            heroParticles.appendChild(span);
+        }
+
+        // --- 2. SCROLL LOGIC & CONFIG ---
+        const chapters = [
+            {
+                progress: [0, 0.15],
+                id: "hero",
+                ghost: ["isaac", "flora", "hannah", "benjamin", "eve"],
+                props: [],
+                text: {
+                    label: "",
+                    date: "",
+                    narrative:
+                        "Il était une fois…<br><span class='hero-names'>Flora &amp; Benjamin</span>",
+                },
+                bg: "bg-stars",
+            },
+            {
+                progress: [0.15, 0.3],
+                id: "rencontre",
+                ghost: ["hannah", "isaac", "eve"],
+                visible: ["flora", "benjamin"],
+                enterFrom: { flora: "left", benjamin: "right" },
+                props: [],
+                text: {
+                    label: "I · La Rencontre",
+                    date: "9 MARS 2005",
+                    narrative:
+                        "Deux chemins distincts qui, par la force du destin, se croisent pour ne plus jamais se séparer.",
+                },
+                bg: "bg-rencontre",
+            },
+            {
+                progress: [0.3, 0.45],
+                id: "luxembourg",
+                ghost: ["hannah", "isaac", "eve"],
+                visible: ["flora", "benjamin"],
+                props: [],
+                text: {
+                    label: "II · L'Aventure à Deux",
+                    date: "2013",
+                    narrative:
+                        "Un nouveau décor pour notre amour. Nous posons nos valises au Luxembourg pour écrire le prochain chapitre.",
+                },
+                bg: "bg-luxembourg",
+            },
+            {
+                progress: [0.45, 0.6],
+                id: "hannah",
+                ghost: ["isaac", "eve"],
+                visible: ["flora", "benjamin", "hannah"],
+                enterFrom: { hannah: "top" },
+                props: ["stars"],
+                text: {
+                    label: "III · Hannah",
+                    date: "8 MAI 2018",
+                    narrative:
+                        "Une nouvelle lumière éclaire notre monde. Notre duo devient une famille.",
+                },
+                bg: "bg-hannah",
+            },
+            {
+                progress: [0.6, 0.72],
+                id: "isaac",
+                ghost: ["eve"],
+                visible: ["flora", "benjamin", "hannah", "isaac"],
+                enterFrom: { isaac: "left" },
+                props: ["stars"],
+                text: {
+                    label: "IV · Isaac",
+                    date: "11 OCTOBRE 2020",
+                    narrative:
+                        "L'amour se multiplie. Un petit explorateur vient agrandir et renforcer le cercle.",
+                },
+                bg: "bg-isaac",
+            },
+            {
+                progress: [0.72, 0.82],
+                id: "eve",
+                ghost: [],
+                visible: ["flora", "benjamin", "hannah", "isaac", "eve"],
+                enterFrom: { eve: "right" },
+                props: ["stars"],
+                text: {
+                    label: "V · Eve",
+                    date: "18 FÉVRIER 2023",
+                    narrative:
+                        "La dernière étoile de notre constellation. Notre univers est désormais complet.",
+                },
+                bg: "bg-eve",
+            },
+            {
+                progress: [0.82, 0.9],
+                id: "bridge",
+                ghost: [],
+                visible: ["flora", "benjamin", "hannah", "isaac", "eve"],
+                dim: true,
+                props: ["stars"],
+                text: {
+                    label: "",
+                    date: "",
+                    narrative: "Et maintenant… après 21 ans…",
+                },
+                bg: "bg-dark",
+            },
+            {
+                progress: [0.9, 1.0],
+                id: "finale",
+                wedding: true,
+                props: [],
+                text: { label: "", date: "", narrative: "" },
+                bg: "bg-gold",
+            },
+        ];
+
+        const wrapper = document.querySelector(".family-stage-wrapper");
+        const textContainer = document.getElementById("scene-text");
+        const textLabel = document.getElementById("text-label");
+        const textDate = document.getElementById("text-date");
+        const textNarrative = document.getElementById("text-narrative");
+        const stageBg = document.getElementById("stage-bg");
+        const weddingOverlay = document.getElementById("wedding-overlay");
+        const revealOverlay = document.getElementById("reveal-overlay");
+        const flashOverlay = document.getElementById("flash-overlay");
+        const revealDateContainer = document.getElementById(
+            "reveal-date-container",
+        );
+
+        // Props
+        const propStars = document.getElementById("prop-stars");
+        const allProps = { stars: propStars };
+
+        let fireworksTriggered = false;
+        let finaleTriggered = false;
+        let currentChapterId = null;
+        let visibleChars = new Set(); // Track characters currently on screen
+
+        // Custom Char animation for Finale
+        // We need to empty revealDateContainer and rebuild with spans
+        revealDateContainer.innerHTML = "";
+        const rDate = "27 AOÛT 2026";
+        rDate.split("").forEach((char, idx) => {
+            const span = document.createElement("span");
+            span.textContent = char;
+            if (char === " ") span.style.width = "0.3em";
+            span.style.animationDelay = `${idx * 0.06 + 0.5}s`;
+            revealDateContainer.appendChild(span);
+        });
+
+        window.addEventListener(
+            "scroll",
+            () => {
+                const rect = wrapper.getBoundingClientRect();
+                const totalScrollable = wrapper.offsetHeight - window.innerHeight;
+                const scrolled = Math.abs(rect.top);
+
+                if (rect.top <= 0 && rect.bottom >= 0) {
+                    const globalProgress = Math.max(
+                        0,
+                        Math.min(1, scrolled / totalScrollable),
+                    );
+                    updateScene(globalProgress);
+                } else if (rect.top > 0) {
+                    updateScene(0);
+                } else if (rect.bottom < 0) {
+                    updateScene(1);
+                }
+            },
+            { passive: true },
+        );
+
+        function updateScene(progress) {
+            const chapter =
+                chapters.find(
+                    (c) => progress >= c.progress[0] && progress < c.progress[1],
+                ) || chapters[chapters.length - 1];
+
+            if (currentChapterId !== chapter.id) {
+                currentChapterId = chapter.id;
+
+                textContainer.classList.remove("active");
+                setTimeout(() => {
+                    if (chapter.id === "finale") {
+                        textLabel.textContent = "";
+                        textDate.textContent = "";
+                        textNarrative.innerHTML = "";
+                    } else {
+                        textLabel.textContent = chapter.text.label;
+                        textDate.textContent = chapter.text.date;
+                        textNarrative.innerHTML = chapter.text.narrative;
+                        textContainer.classList.add("active");
+                    }
+                }, 400);
+
+                stageBg.className = "stage-bg " + chapter.bg;
+
+                // Update Props
+                Object.keys(allProps).forEach((key) => {
+                    if (chapter.props && chapter.props.includes(key)) {
+                        allProps[key].classList.add("visible");
+                    } else {
+                        allProps[key].classList.remove("visible");
+                    }
+                });
+            }
+
+            const allChars = ["isaac", "flora", "hannah", "benjamin", "eve"];
+            allChars.forEach((name) => {
+                const el = document.getElementById("char-" + name);
+
+                el.classList.remove(
+                    "char-hidden-left",
+                    "char-hidden-right",
+                    "char-hidden-top",
+                    "char-ghost",
+                    "char-visible",
+                );
+                el.style.opacity = ""; // Reset inline opacity
+                el.style.display = ""; // Reset display
+
+                if (chapter.wedding) {
+                    // Start Wedding Transition -> INSTANTLY HIDE individual chars
+                    el.style.display = "none";
+                    visibleChars.delete(name);
+                } else if (chapter.ghost && chapter.ghost.includes(name)) {
+                    el.classList.add("char-ghost");
+                    visibleChars.delete(name); // Removed from full visibility
+                    el.classList.remove("char-boom");
+                } else if (chapter.visible && chapter.visible.includes(name)) {
+                    el.classList.add("char-visible");
+
+                    // TRIGGER ENTRANCE EFFECTS
+                    if (!visibleChars.has(name)) {
+                        visibleChars.add(name);
+
+                        // Heart Rain (Keep this, it's cute)
+                        const rect = el.getBoundingClientRect();
+                        spawnHearts(rect);
+                    }
+                } else {
+                    // Hidden state
+                    visibleChars.delete(name);
+
+                    // Check enter direction (Now simplified to just Page Turn)
+                    el.classList.add("char-hidden-left"); // Unified hidden state
+                }
+            });
+
+            if (chapter.wedding) {
+                if (!finaleTriggered) {
+                    finaleTriggered = true;
+
+                    flashOverlay.style.opacity = "0.6";
+                    setTimeout(() => {
+                        flashOverlay.style.opacity = "0";
+                    }, 1000);
+
+                    weddingOverlay.classList.add("crossfade-active");
+                    revealOverlay.classList.add("reveal-visible");
+
+                    triggerFireworks();
+
+                    // Play GIF Seamlessly
+                    const video = document.getElementById("wedding-video");
+                    video.src = "assets/groupe_mariage_transparent.gif";
+
+                    // Allow load time then show
+                    setTimeout(() => {
+                        video.classList.add("video-visible");
+                    }, 100);
+                }
+            } else {
+                if (finaleTriggered) {
+                    finaleTriggered = false;
+                    weddingOverlay.classList.remove("crossfade-active");
+                    revealOverlay.classList.remove("reveal-visible");
+
+                    // Reset Video/GIF
+                    const video = document.getElementById("wedding-video");
+                    video.classList.remove("video-visible");
+                    setTimeout(() => {
+                        video.src = ""; // Unload GIF to reset animation
+                    }, 500);
+                }
+            }
+        }
+
+        // --- 4. HEART RAIN ---
+        function spawnHearts(rect) {
+            const count = 15;
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement("div");
+                heart.textContent = "❤️";
+                heart.classList.add("heart-particle");
+
+                // Random position above character
+                const left = rect.left + Math.random() * rect.width;
+                const top = rect.top + Math.random() * (rect.height / 3);
+
+                heart.style.left = `${left}px`;
+                heart.style.top = `${top}px`;
+
+                // Random fall properties
+                const duration = 1.5 + Math.random() * 1.5;
+                heart.style.setProperty("--duration", `${duration}s`);
+
+                document.body.appendChild(heart);
+
+                // Cleanup
+                setTimeout(() => {
+                    heart.remove();
+                }, duration * 1000);
+            }
+        }
+
+        // --- 3. FIREWORKS ENGINE ---
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 14;
+                this.vy = (Math.random() - 0.5) * 14 - 4;
+                this.alpha = 1;
+                this.size = Math.random() * 3.5 + 0.5;
+                this.color = ["#c9a84c", "#f5f0e8", "#ffffff", "#e8d5a3", "#d4af6a"][
+                    Math.floor(Math.random() * 5)
+                ];
+                this.gravity = 0.18;
+                this.decay = 0.012 + Math.random() * 0.012;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += this.gravity;
+                this.alpha -= this.decay;
+                this.vx *= 0.99;
+            }
+            draw(ctx) {
+                ctx.globalAlpha = Math.max(0, this.alpha);
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        let particles = [];
+        let animFrame;
+
+        function triggerFireworks() {
+            if (fireworksTriggered) return;
+            fireworksTriggered = true;
+
+            const canvas = document.getElementById("fireworks-canvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const cx = canvas.width / 2;
+            const cy = canvas.height * 0.45;
+
+            const pCount = window.innerWidth < 768 ? 150 : 300;
+
+            // clear old particles if any
+            particles = [];
+
+            for (let i = 0; i < pCount; i++) {
+                particles.push(new Particle(cx, cy));
+            }
+
+            if (animFrame) cancelAnimationFrame(animFrame);
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles = particles.filter((p) => p.alpha > 0);
+                particles.forEach((p) => {
+                    p.update();
+                    p.draw(ctx);
+                });
+
+                if (particles.length > 0) {
+                    animFrame = requestAnimationFrame(animate);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    fireworksTriggered = false; // Allow re-trigger logic in updateScene to handle state
+                }
+            }
+            animate();
+        }
+
+        // Initial call
+        updateScene(0);
+    </script>
+</body>
+
+</html>
