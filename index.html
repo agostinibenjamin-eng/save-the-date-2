@@ -50,6 +50,8 @@
         position: relative;
         z-index: 10;
         overflow: hidden;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
       }
 
       /* Hero Video Background */
@@ -249,6 +251,7 @@
       .family-stage-wrapper {
         height: 600vh;
         position: relative;
+        scroll-snap-type: y mandatory;
       }
 
       .family-stage {
@@ -900,16 +903,6 @@
 
       /* RESPONSIVE */
       @media (max-width: 768px) {
-        html,
-        body {
-          scroll-snap-type: y mandatory;
-        }
-
-        .hero {
-          scroll-snap-align: start;
-          scroll-snap-stop: always;
-        }
-
         .characters-container {
           display: grid;
           grid-template-columns: repeat(6, 1fr);
@@ -1328,35 +1321,35 @@
 
       const wrapper = document.querySelector(".family-stage-wrapper");
 
-      // MOBILE SCROLL SNAP LOGIC
+      // UNIVERSAL SCROLL SNAP LOGIC
       function setupScrollSnap() {
         document.querySelectorAll(".snap-point").forEach((e) => e.remove());
-        if (window.innerWidth <= 768) {
-          const totalScrollable = wrapper.offsetHeight - window.innerHeight;
-          if (totalScrollable > 0) {
-            chapters.forEach((c) => {
-              const snapEl = document.createElement("div");
-              snapEl.className = "snap-point";
-              snapEl.style.position = "absolute";
-              snapEl.style.top = `${c.progress[0] * totalScrollable}px`;
-              snapEl.style.width = "100%";
-              snapEl.style.height = "1px";
-              snapEl.style.pointerEvents = "none";
-              snapEl.style.scrollSnapAlign = "start";
-              snapEl.style.scrollSnapStop = "always"; /* Force stop */
-              wrapper.appendChild(snapEl);
-            });
-            const snapElEnd = document.createElement("div");
-            snapElEnd.className = "snap-point";
-            snapElEnd.style.position = "absolute";
-            snapElEnd.style.top = `${totalScrollable}px`;
-            snapElEnd.style.width = "100%";
-            snapElEnd.style.height = "1px";
-            snapElEnd.style.pointerEvents = "none";
-            snapElEnd.style.scrollSnapAlign = "end";
-            snapElEnd.style.scrollSnapStop = "always"; /* Force stop */
-            wrapper.appendChild(snapElEnd);
-          }
+
+        // Remove conditional logic so desktop gets scroll snapping too
+        const totalScrollable = wrapper.offsetHeight - window.innerHeight;
+        if (totalScrollable > 0) {
+          chapters.forEach((c) => {
+            const snapEl = document.createElement("div");
+            snapEl.className = "snap-point";
+            snapEl.style.position = "absolute";
+            snapEl.style.top = `${c.progress[0] * totalScrollable}px`;
+            snapEl.style.width = "100%";
+            snapEl.style.height = "1px";
+            snapEl.style.pointerEvents = "none";
+            snapEl.style.scrollSnapAlign = "start";
+            snapEl.style.scrollSnapStop = "always"; /* Force stop */
+            wrapper.appendChild(snapEl);
+          });
+          const snapElEnd = document.createElement("div");
+          snapElEnd.className = "snap-point";
+          snapElEnd.style.position = "absolute";
+          snapElEnd.style.top = `${totalScrollable}px`;
+          snapElEnd.style.width = "100%";
+          snapElEnd.style.height = "1px";
+          snapElEnd.style.pointerEvents = "none";
+          snapElEnd.style.scrollSnapAlign = "end";
+          snapElEnd.style.scrollSnapStop = "always"; /* Force stop */
+          wrapper.appendChild(snapElEnd);
         }
       }
       setupScrollSnap();
