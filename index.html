@@ -883,51 +883,58 @@
           scroll-snap-type: y mandatory;
         }
 
+        .characters-container {
+          width: 800px;
+          bottom: 60px;
+          /* Scale the entire perfectly aligned desktop layout down to fit a 320px-350px block visually */
+          transform: translateX(-50%) scale(0.42) !important;
+          transform-origin: bottom center;
+        }
+
         .character {
-          height: 32vw;
-          /* Reduced from 38vw to fit within screen */
+          height: 380px;
+          /* Lock height in pixel so vh doesn't double-shrink on mobile */
           width: auto;
           max-height: none;
           margin: 0;
         }
 
-        /* Tighter proportional overlaps mathematically scaling original desktop values */
+        /* Fixed overlaps matching the 800px virtual container perfectly */
         #char-isaac {
-          margin-right: -8vw;
+          margin-right: -55px;
         }
 
         #char-flora {
-          margin-left: -8vw;
-          margin-right: -10vw;
+          margin-left: -55px;
+          margin-right: -90px;
         }
 
         #char-hannah {
-          margin-bottom: -1vw;
-          /* Keeps Hannah exactly leveled from original */
-          margin-left: -10vw;
-          margin-right: -11vw;
+          margin-bottom: -15px;
+          margin-left: -90px;
+          margin-right: -100px;
         }
 
         #char-benjamin {
-          margin-left: -11vw;
-          margin-right: -9vw;
+          margin-left: -100px;
+          margin-right: -80px;
         }
 
         #char-eve {
-          margin-left: -9vw;
+          margin-left: -80px;
         }
 
-        .characters-container,
         .wedding-overlay {
           width: 100vw;
-          height: 50vh;
+          height: 40vh;
           bottom: 12%;
-          /* a bit of padding for mobile browser ui */
         }
 
-        .wedding-overlay .group-photo {
-          max-width: 100%;
-          max-height: 100%;
+        .wedding-overlay .group-photo,
+        .wedding-overlay .group-video {
+          width: 90vw !important;
+          /* Overrides clamp(500px) which forced the cutoff on small mobile */
+          max-width: none;
         }
 
         .scene-text {
@@ -945,7 +952,6 @@
 
         .stage-prop-container {
           z-index: -1;
-          /* Keep behind text */
         }
       }
 
