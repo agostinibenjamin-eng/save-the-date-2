@@ -178,6 +178,28 @@
         z-index: 5;
       }
 
+      .next-chapter-indicator {
+        position: fixed;
+        bottom: 3vh;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: "Cinzel", serif;
+        font-size: 0.8rem;
+        color: rgba(201, 168, 76, 0.9);
+        letter-spacing: 0.1em;
+        text-align: center;
+        z-index: 50;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease;
+        text-transform: uppercase;
+      }
+
+      .next-chapter-indicator.visible {
+        opacity: 1;
+        animation: pulse 2s infinite ease-in-out;
+      }
+
       /* ... existing particles ... */
       .particle {
         position: absolute;
@@ -917,7 +939,7 @@
           grid-column: 2 / span 2;
           grid-row: 1;
           z-index: 1;
-          top: 2vh;
+          top: -2vh;
           width: calc(var(--base-scale) * 1.5) !important;
         }
 
@@ -925,7 +947,7 @@
           grid-column: 4 / span 2;
           grid-row: 1;
           z-index: 1;
-          top: 2vh;
+          top: -2vh;
           width: calc(var(--base-scale) * 1.5) !important;
         }
 
@@ -1107,6 +1129,20 @@
             src="assets/Eve_cutout.png"
             alt="Eve"
           />
+        </div>
+
+        <div id="next-chapter-indicator" class="next-chapter-indicator">
+          Défilez vers le bas ↓<br />
+          <span
+            id="next-chapter-name"
+            style="
+              font-size: 0.7em;
+              opacity: 0.8;
+              font-style: italic;
+              font-family: &quot;EB Garamond&quot;, serif;
+              letter-spacing: 0.05em;
+            "
+          ></span>
         </div>
 
         <div class="wedding-overlay" id="wedding-overlay">
@@ -1301,6 +1337,7 @@
               snapEl.style.height = "1px";
               snapEl.style.pointerEvents = "none";
               snapEl.style.scrollSnapAlign = "start";
+              snapEl.style.scrollSnapStop = "always"; /* Force stop */
               wrapper.appendChild(snapEl);
             });
             const snapElEnd = document.createElement("div");
@@ -1311,6 +1348,7 @@
             snapElEnd.style.height = "1px";
             snapElEnd.style.pointerEvents = "none";
             snapElEnd.style.scrollSnapAlign = "end";
+            snapElEnd.style.scrollSnapStop = "always"; /* Force stop */
             wrapper.appendChild(snapElEnd);
           }
         }
@@ -1374,13 +1412,37 @@
       );
 
       function updateScene(progress) {
+        const index = chapters.findIndex(
+          (c) => progress >= c.progress[0] && progress < c.progress[1],
+        );
         const chapter =
-          chapters.find(
-            (c) => progress >= c.progress[0] && progress < c.progress[1],
-          ) || chapters[chapters.length - 1];
+          index !== -1 ? chapters[index] : chapters[chapters.length - 1];
+        const chapterIndex = index !== -1 ? index : chapters.length - 1;
 
         if (currentChapterId !== chapter.id) {
           currentChapterId = chapter.id;
+
+          /* Next Chapter Indicator Logic */
+          const nextChapter = chapters[chapterIndex + 1];
+          const nextInd = document.getElementById("next-chapter-indicator");
+          const nextName = document.getElementById("next-chapter-name");
+
+          if (nextInd && nextName) {
+            if (
+              nextChapter &&
+              chapter.id !== "finale" &&
+              chapter.id !== "bridge" &&
+              progress > 0.05
+            ) {
+              let nLabel = nextChapter.text.label || "La suite";
+              if (nLabel.includes("·")) nLabel = nLabel.split("·")[1].trim();
+              if (!nLabel) nLabel = "La suite";
+              nextName.textContent = nLabel;
+              nextInd.classList.add("visible");
+            } else {
+              nextInd.classList.remove("visible");
+            }
+          }
 
           textContainer.classList.remove("active");
           setTimeout(() => {
